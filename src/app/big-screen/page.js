@@ -154,7 +154,7 @@ export default function BigScreenPage() {
           loop
           sx={{
             position: "relative",
-            width: "80vw",
+            width: "90vw",
             height: "80vh",
             objectFit: "contain",
             borderRadius: "2rem",
