@@ -10,17 +10,21 @@ export default function BigScreenPage() {
   const router = useRouter();
   const { currentMedia, isLoading } = useWebSocketBigScreen();
   const [showContent, setShowContent] = useState(false);
+const [showLoader, setShowLoader] = useState(false);
 
-  useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => {
-        setShowContent(true);
-      }, 1000); // 1 second delay after loading
-      return () => clearTimeout(timer);
-    } else {
-      setShowContent(false); // Reset when loading starts
-    }
-  }, [isLoading]);
+useEffect(() => {
+  if (isLoading) {
+    setShowLoader(true);
+    setShowContent(false);
+  } else {
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+      setShowContent(true);
+    }, 1000); // force loader to stay for 1s after loading ends
+
+    return () => clearTimeout(timer);
+  }
+}, [isLoading, currentMedia]);
 
   return (
     <Box
@@ -69,22 +73,23 @@ export default function BigScreenPage() {
       </IconButton>
 
       {/* LOADING ANIMATION */}
-      {isLoading && (
-        <Box
-          component="img"
-          src="Animation-unscreen.gif"
-          alt="Loading"
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "150px",
-            height: "auto",
-            zIndex: 3,
-          }}
-        />
-      )}
+{showLoader && (
+  <Box
+    component="img"
+    src="Animation-unscreen.gif"
+    alt="Loading"
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: "150px",
+      height: "auto",
+      zIndex: 3,
+    }}
+  />
+)}
+
 
       {/* DEFAULT IDLE STATE */}
       {!isLoading && showContent && !currentMedia && (
