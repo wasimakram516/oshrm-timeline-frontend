@@ -5,6 +5,7 @@ import { Box, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useWebSocketBigScreen from "@/hooks/useWebSocketBigScreen";
 import { Shift } from "ambient-cbg";
+import { FourSquare } from "react-loading-indicators";
 
 export default function BigScreenPage() {
   const router = useRouter();
@@ -74,20 +75,9 @@ export default function BigScreenPage() {
 
       {/* LOADING ANIMATION */}
       {showLoader && (
-        <Box
-          component="img"
-          src="Animation-unscreen.gif"
-          alt="Loading"
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "150px",
-            height: "auto",
-            zIndex: 3,
-          }}
-        />
+        <Box sx={{zIndex:9999}}>
+          <FourSquare color="#96D8EA" size="large" text="" textColor="" />
+        </Box>
       )}
 
       {/* DEFAULT IDLE STATE */}
