@@ -76,7 +76,7 @@ export default function BigScreenPage() {
       {/* LOADING ANIMATION */}
       {showLoader && (
         <Box sx={{zIndex:9999}}>
-          <FourSquare color="#96D8EA" size="large" text="" textColor="" />
+          <FourSquare color={["#32cd32", "#96D8EA", "#cd32cd", "#cd8032"]} size="large" text="" textColor="" />
         </Box>
       )}
 
