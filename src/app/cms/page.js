@@ -28,12 +28,12 @@ import {
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 
 const categoryOptions = {
-  "About OSHRM": ["About OSHRM", "Why OSHRM"],
+  "About OSHRM": ["About OSHRM", "Why OSHRM", "OSHRM Arms"],
   "OSHRM People": ["Board", "Team"],
-  "OSHRM Projects": [],
-  Partners: [],
+  "Success Stories": ["Success Stories", "Conferences"],
+  "Partners": ["2025 Sponsors", "Partners"],
   "Professional Certifications": [],
-  Upcoming: ["Coming soon", "Rest of the year"],
+  "Upcoming": ["Coming soon", "2025 Calendar"],
 };
 
 export default function CMSPage() {

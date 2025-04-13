@@ -66,7 +66,7 @@ export default function BigScreenPage() {
           top: 20,
           left: 20,
           color: "#fff",
-          zIndex: 2,
+          zIndex: 99999999,
         }}
         onClick={() => router.push("/")}
       >
@@ -75,7 +75,7 @@ export default function BigScreenPage() {
 
       {/* LOADING ANIMATION */}
       {showLoader && (
-        <Box sx={{zIndex:9999}}>
+        <Box sx={{zIndex:99}}>
           <FourSquare color={["#32cd32", "#96D8EA", "#cd32cd", "#cd8032"]} size="large" text="" textColor="" />
         </Box>
       )}

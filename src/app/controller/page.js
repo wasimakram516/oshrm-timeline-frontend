@@ -8,12 +8,12 @@ import useWebSocketController from "@/hooks/useWebSocketController";
 import { Swirl } from "ambient-cbg";
 
 const categoryOptions = {
-  "About OSHRM": ["About OSHRM", "Why OSHRM"],
+  "About OSHRM": ["About OSHRM", "Why OSHRM", "OSHRM Arms"],
   "OSHRM People": ["Board", "Team"],
-  "Success Stories": [],
-  Partners: [],
+  "Success Stories": ["Success Stories", "Conferences"],
+  Partners: ["2025 Sponsors", "Partners"],
   "Professional Certifications": [],
-  Upcoming: ["Coming soon", "Rest of the year"],
+  Upcoming: ["Coming soon", "2025 Calendar"],
 };
 
 export default function Controller() {
@@ -109,14 +109,21 @@ export default function Controller() {
       </Box>
 
       <IconButton
-        sx={{ position: "absolute", top: 20, left: 20, color: "#fff", zIndex: 99 }}
+        sx={{
+          position: "absolute",
+          top: 20,
+          left: 20,
+          color: "#fff",
+          zIndex: 99,
+        }}
         onClick={() => router.push("/")}
       >
         <ArrowBackIcon />
       </IconButton>
 
       {Object.entries(categoryOptions).map(([category, subcategories]) => {
-        const isActiveMain = selected.category === category && !selected.subcategory;
+        const isActiveMain =
+          selected.category === category && !selected.subcategory;
 
         return (
           <motion.div
@@ -144,10 +151,18 @@ export default function Controller() {
                   position: "absolute",
                   bottom: "120%",
                   left: "50%",
-                  transform: "translateX(-50%)",
+                  transform: {
+                    xs: "translateX(-50%)",
+                    md:
+                      category === "About OSHRM"
+                        ? "translateX(-30%)"
+                        : category === "Upcoming"
+                        ? "translateX(-50%)"
+                        : "translateX(-50%)",
+                  },
                   display: "flex",
                   flexDirection: "row",
-                  gap: { sm: 4, md: "7rem" },
+                  gap: { sm: 2, md: "3rem" },
                   zIndex: 10,
                 }}
               >
@@ -161,7 +176,9 @@ export default function Controller() {
                       key={subcat}
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
-                      animate={isActiveSub ? { scale: 1.1, rotate: [0, 3, -3, 0] } : {}}
+                      animate={
+                        isActiveSub ? { scale: 1.1, rotate: [0, 3, -3, 0] } : {}
+                      }
                       transition={{ duration: 0.5 }}
                       style={{
                         ...bubbleBase,
