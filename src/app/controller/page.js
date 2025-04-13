@@ -5,12 +5,12 @@ import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
 import useWebSocketController from "@/hooks/useWebSocketController";
-import { Pipeline } from "ambient-cbg";
+import { Swirl } from "ambient-cbg";
 
 const categoryOptions = {
   "About OSHRM": ["About OSHRM", "Why OSHRM"],
   "OSHRM People": ["Board", "Team"],
-  "OSHRM Projects": [],
+  "Success Stories": [],
   Partners: [],
   "Professional Certifications": [],
   Upcoming: ["Coming soon", "Rest of the year"],
@@ -105,7 +105,7 @@ export default function Controller() {
       }}
     >
       <Box sx={{ position: "absolute", inset: 0, zIndex: 0 }}>
-        <Pipeline />
+        <Swirl />
       </Box>
 
       <IconButton

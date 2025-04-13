@@ -138,7 +138,7 @@ export default function BigScreenPage() {
             width: "90vw",
             height: "auto",
             objectFit: "contain",
-            borderRadius: "2rem",
+            borderRadius: "5rem",
             zIndex: 2,
           }}
         />
@@ -157,7 +157,7 @@ export default function BigScreenPage() {
             width: "90vw",
             height: "auto",
             objectFit: "contain",
-            borderRadius: "2rem",
+            borderRadius: "5rem",
             zIndex: 2,
           }}
         />
