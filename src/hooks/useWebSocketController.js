@@ -22,7 +22,6 @@ export default function useWebSocketController() {
 
   const sendCategorySelection = (category, subcategory) => {
     if (socket) {
-      socket.emit("categorySelected"); // trigger loading animation
       socket.emit("selectCategory", { category, subcategory });
     }
   };
