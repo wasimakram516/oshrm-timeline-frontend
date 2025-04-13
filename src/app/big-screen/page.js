@@ -36,7 +36,7 @@ export default function BigScreenPage() {
           position: "absolute",
           width: "100%",
           height: "100%",
-          zIndex: 1, 
+          zIndex: 1,
         }}
       >
         <Shift />
@@ -68,17 +68,39 @@ export default function BigScreenPage() {
       )}
 
       {!isLoading && !currentMedia && (
-        <Typography
-          variant="h4"
+        <Box
           sx={{
-            color: "white",
-            textAlign: "center",
-            opacity: 0.6,
+            position: "relative",
+            width: "100%",
+            height: "100%",
             zIndex: 2,
           }}
         >
-          Select a category or subcategory from the controller
-        </Typography>
+          <Box
+            component="img"
+            src="OSHRM.png"
+            alt="Display Image"
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+          <Box
+            component="img"
+            src="arrow.gif"
+            alt="Arrow"
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "110px",
+              height: "auto",
+              zIndex: 3,
+            }}
+          />
+        </Box>
       )}
 
       {!isLoading && currentMedia?.media?.type === "image" && (
