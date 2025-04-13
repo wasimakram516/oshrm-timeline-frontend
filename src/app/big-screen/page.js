@@ -90,7 +90,7 @@ export default function BigScreenPage() {
             position: "relative",
             width: "100%",
             height: "100%",
-            objectFit: "cover",
+            objectFit: "contain",
             zIndex: 2,
           }}
         />
@@ -107,7 +107,7 @@ export default function BigScreenPage() {
             position: "relative",
             width: "100%",
             height: "100%",
-            objectFit: "cover",
+            objectFit: "contain",
             zIndex: 2,
           }}
         />
