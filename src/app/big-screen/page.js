@@ -136,7 +136,7 @@ export default function BigScreenPage() {
           sx={{
             position: "relative",
             width: "90vw",
-            height: "80vh",
+            height: "auto",
             objectFit: "contain",
             borderRadius: "2rem",
             zIndex: 2,
@@ -155,7 +155,7 @@ export default function BigScreenPage() {
           sx={{
             position: "relative",
             width: "90vw",
-            height: "80vh",
+            height: "auto",
             objectFit: "contain",
             borderRadius: "2rem",
             zIndex: 2,
