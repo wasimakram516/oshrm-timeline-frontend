@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Box, IconButton, CircularProgress, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useWebSocketBigScreen from "@/hooks/useWebSocketBigScreen";
 import { Shift } from "ambient-cbg";
@@ -8,6 +9,18 @@ import { Shift } from "ambient-cbg";
 export default function BigScreenPage() {
   const router = useRouter();
   const { currentMedia, isLoading } = useWebSocketBigScreen();
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 1000); // 1 second delay after loading
+      return () => clearTimeout(timer);
+    } else {
+      setShowContent(false); // Reset when loading starts
+    }
+  }, [isLoading]);
 
   return (
     <Box
@@ -55,19 +68,26 @@ export default function BigScreenPage() {
         <ArrowBackIcon />
       </IconButton>
 
+      {/* LOADING ANIMATION */}
       {isLoading && (
-        <CircularProgress
+        <Box
+          component="img"
+          src="Animation-unscreen.gif"
+          alt="Loading"
           sx={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            zIndex: 2,
+            width: "150px",
+            height: "auto",
+            zIndex: 3,
           }}
         />
       )}
 
-      {!isLoading && !currentMedia && (
+      {/* DEFAULT IDLE STATE */}
+      {!isLoading && showContent && !currentMedia && (
         <Box
           sx={{
             position: "relative",
@@ -103,22 +123,26 @@ export default function BigScreenPage() {
         </Box>
       )}
 
-      {!isLoading && currentMedia?.media?.type === "image" && (
+      {/* IMAGE DISPLAY */}
+      {!isLoading && showContent && currentMedia?.media?.type === "image" && (
         <Box
           component="img"
           src={currentMedia.media.url}
           alt="Display Image"
           sx={{
             position: "relative",
-            width: "100%",
-            height: "100%",
+            width: "80vw",
+            height: "80vh",
             objectFit: "contain",
+            borderRadius: "2rem",
+            boxShadow: "0 0 30px rgba(0,0,0,0.3)",
             zIndex: 2,
           }}
         />
       )}
 
-      {!isLoading && currentMedia?.media?.type === "video" && (
+      {/* VIDEO DISPLAY */}
+      {!isLoading && showContent && currentMedia?.media?.type === "video" && (
         <Box
           component="video"
           src={currentMedia.media.url}
@@ -127,9 +151,10 @@ export default function BigScreenPage() {
           loop
           sx={{
             position: "relative",
-            width: "100%",
-            height: "100%",
+            width: "80vw",
+            height: "80vh",
             objectFit: "contain",
+            borderRadius: "2rem",
             zIndex: 2,
           }}
         />

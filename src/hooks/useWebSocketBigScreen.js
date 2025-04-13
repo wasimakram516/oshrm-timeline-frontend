@@ -20,9 +20,17 @@ export default function useWebSocketBigScreen() {
     socketInstance.on("connect", () => {
       console.log("✅ Connected to WebSocket Server (Big Screen)", socketInstance.id);
       socketInstance.emit("register", "big-screen");
-      setIsLoading(false); // Immediately stop loading on connect
+      setIsLoading(false);
     });
 
+    // Show loading when a category is selected
+    socketInstance.on("categorySelected", () => {
+      console.log("⏳ Category selected – show loading");
+      setIsLoading(true);
+      setCurrentMedia(null);
+    });
+
+    // Media arrives
     socketInstance.on("displayMedia", (mediaData) => {
       console.log("🖥️ Display media:", mediaData);
       setCurrentMedia(mediaData);

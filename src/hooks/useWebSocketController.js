@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-export default function useWebSocketKiosk() {
+export default function useWebSocketController() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ export default function useWebSocketKiosk() {
 
   const sendCategorySelection = (category, subcategory) => {
     if (socket) {
+      socket.emit("categorySelected"); // trigger loading animation
       socket.emit("selectCategory", { category, subcategory });
     }
   };
