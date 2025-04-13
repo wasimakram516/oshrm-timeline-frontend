@@ -10,21 +10,21 @@ export default function BigScreenPage() {
   const router = useRouter();
   const { currentMedia, isLoading } = useWebSocketBigScreen();
   const [showContent, setShowContent] = useState(false);
-const [showLoader, setShowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
-useEffect(() => {
-  if (isLoading) {
-    setShowLoader(true);
-    setShowContent(false);
-  } else {
-    const timer = setTimeout(() => {
-      setShowLoader(false);
-      setShowContent(true);
-    }, 1000); // force loader to stay for 1s after loading ends
+  useEffect(() => {
+    if (isLoading) {
+      setShowLoader(true);
+      setShowContent(false);
+    } else {
+      const timer = setTimeout(() => {
+        setShowLoader(false);
+        setShowContent(true);
+      }, 1000); // force loader to stay for 1s after loading ends
 
-    return () => clearTimeout(timer);
-  }
-}, [isLoading, currentMedia]);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, currentMedia]);
 
   return (
     <Box
@@ -73,23 +73,22 @@ useEffect(() => {
       </IconButton>
 
       {/* LOADING ANIMATION */}
-{showLoader && (
-  <Box
-    component="img"
-    src="Animation-unscreen.gif"
-    alt="Loading"
-    sx={{
-      position: "absolute",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-      width: "150px",
-      height: "auto",
-      zIndex: 3,
-    }}
-  />
-)}
-
+      {showLoader && (
+        <Box
+          component="img"
+          src="Animation-unscreen.gif"
+          alt="Loading"
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "150px",
+            height: "auto",
+            zIndex: 3,
+          }}
+        />
+      )}
 
       {/* DEFAULT IDLE STATE */}
       {!isLoading && showContent && !currentMedia && (
@@ -136,11 +135,10 @@ useEffect(() => {
           alt="Display Image"
           sx={{
             position: "relative",
-            width: "80vw",
+            width: "90vw",
             height: "80vh",
             objectFit: "contain",
             borderRadius: "2rem",
-            boxShadow: "0 0 30px rgba(0,0,0,0.3)",
             zIndex: 2,
           }}
         />
