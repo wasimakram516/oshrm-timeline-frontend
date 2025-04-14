@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import useWebSocketController from "@/hooks/useWebSocketController";
 import { Swirl } from "ambient-cbg";
 
+// Category data: same as your current code
 const categoryOptions = {
   "About OSHRM": ["About OSHRM", "Why OSHRM", "OSHRM Arms"],
   "OSHRM People": ["Board", "Team"],
@@ -19,9 +20,30 @@ const categoryOptions = {
 export default function Controller() {
   const router = useRouter();
   const { sendCategorySelection } = useWebSocketController();
+
+  // Track which category is "open" (showing sub-bubbles) & which is "selected"
   const [openCategory, setOpenCategory] = useState(null);
   const [selected, setSelected] = useState({ category: "", subcategory: "" });
 
+  // ⏰ Inactivity timer: If user selects real content (subcat or no-subcat cat),
+  // we start/refresh a 90s timer. After 90s inactivity, revert to idle.
+  useEffect(() => {
+    // If NOTHING is selected, no need for a timer
+    if (!selected.category && !selected.subcategory) return;
+
+    // If there's some selected content, start a 90s timer
+    const timer = setTimeout(() => {
+      // Revert everything back to idle
+      setSelected({ category: "", subcategory: "" });
+      setOpenCategory(null);
+      sendCategorySelection("", "");
+    }, 90000); // 90 seconds
+
+    // If the user makes another selection before 90s, clear & restart timer
+    return () => clearTimeout(timer);
+  }, [selected, sendCategorySelection]);
+
+  // Bubble style base
   const bubbleBase = {
     backgroundImage: "linear-gradient(to top, #a3bded 0%, #6991c7 100%)",
     boxShadow: `rgba(45, 35, 66, 0.4) 0px 2px 4px,
@@ -53,36 +75,48 @@ export default function Controller() {
     },
   };
 
+  // Only show media on the Big Screen if a category is truly selected
+  // (i.e. a category with no subcats, or a subcategory).
   const handleCategoryClick = (category, subcategories) => {
+    // 1) If user reclicks the open category => close it & clear Big Screen
     if (openCategory === category) {
       setOpenCategory(null);
       setSelected({ category: "", subcategory: "" });
       sendCategorySelection("", "");
-    } else if (subcategories.length === 0) {
+    } 
+    // 2) If no subcats => show media right away
+    else if (subcategories.length === 0) {
       if (selected.category === category && selected.subcategory === "") {
+        // It was already selected => deselect
         setSelected({ category: "", subcategory: "" });
         sendCategorySelection("", "");
       } else {
+        // Actually select it
         setSelected({ category, subcategory: "" });
         sendCategorySelection(category, "");
       }
       setOpenCategory(null);
-    } else {
+    } 
+    // 3) Category with subcats => just open sub-bubbles, no media load
+    else {
       setOpenCategory(category);
       setSelected({ category: "", subcategory: "" });
-      sendCategorySelection("", "");
+      // (no sendCategorySelection here => we haven't actually chosen subcat)
     }
   };
 
   const handleSubBubbleClick = (category, subcategory) => {
+    // Subcategory => triggers real selection
     if (
       selected.category === category &&
       selected.subcategory === subcategory
     ) {
+      // Reselecting the same => clear
       setSelected({ category: "", subcategory: "" });
       sendCategorySelection("", "");
       setOpenCategory(null);
     } else {
+      // Actually choose this subcat
       setSelected({ category, subcategory });
       sendCategorySelection(category, subcategory);
     }
@@ -104,23 +138,20 @@ export default function Controller() {
         textAlign: "center",
       }}
     >
+      {/* Background swirl */}
       <Box sx={{ position: "absolute", inset: 0, zIndex: 0 }}>
         <Swirl />
       </Box>
 
+      {/* Back button */}
       <IconButton
-        sx={{
-          position: "absolute",
-          top: 20,
-          left: 20,
-          color: "#fff",
-          zIndex: 99,
-        }}
+        sx={{ position: "absolute", top: 20, left: 20, color: "#fff", zIndex: 99 }}
         onClick={() => router.push("/")}
       >
         <ArrowBackIcon />
       </IconButton>
 
+      {/* Render main categories */}
       {Object.entries(categoryOptions).map(([category, subcategories]) => {
         const isActiveMain =
           selected.category === category && !selected.subcategory;
@@ -145,6 +176,7 @@ export default function Controller() {
           >
             {category}
 
+            {/* Render subcategories if open */}
             {openCategory === category && subcategories.length > 0 && (
               <Box
                 sx={{
@@ -177,7 +209,9 @@ export default function Controller() {
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                       animate={
-                        isActiveSub ? { scale: 1.1, rotate: [0, 3, -3, 0] } : {}
+                        isActiveSub
+                          ? { scale: 1.1, rotate: [0, 3, -3, 0] }
+                          : {}
                       }
                       transition={{ duration: 0.5 }}
                       style={{
